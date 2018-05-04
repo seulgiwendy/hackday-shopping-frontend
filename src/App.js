@@ -6,6 +6,8 @@ import Header from './Header';
 import Footer from './Footer';
 import LoginBox from './LoginBox';
 import NoticeList from './notice/NoticeList';
+import ArticlePage from './notice/ArticlePage';
+import NewArticlePage from './admin/NewArticlePage';
 
 class App extends Component {
   render() {
@@ -16,6 +18,8 @@ class App extends Component {
         <div className="body-container">
           <Route exact path="/" component={LoginBox}/>
           <Route exact path="/notice" component={NoticeList}/>
+          <Route exact path="/article" component={ArticlePage}/>
+          <Route exact path="/admin" component={NewArticlePage}/>
         </div>
         <Footer/>
       </div>

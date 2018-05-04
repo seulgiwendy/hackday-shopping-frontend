@@ -1,0 +1,41 @@
+.articlewrite-container {
+    width: 90%;
+    min-height: 700px;
+
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    background-color: #fff;
+
+    padding: 50px;
+    padding-top: 10px;
+
+    border: 1px silver solid;
+}
+
+.articlewrite-pagetitle {
+    text-align: center;
+}
+
+.articlewrite-editor-container {
+    padding: 20px;
+}
+
+.articleinfo-input {
+    margin: 0 20px;
+    display: inline-block;
+    width: 250px;
+}
+
+.group-selection-caption {
+    display: inline-block;
+    margin: 0 20px;
+}
+
+.group-selection-checkbox {
+    display: inline-block;
+}
+
+.group-caption {
+    margin: 0 5px;
+}

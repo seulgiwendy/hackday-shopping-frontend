@@ -18,6 +18,9 @@ const NoticeList = (props) => {
                 </div>
             </div>
             <NoticeItems/>
+            <div className="notice-paginator">
+                1
+            </div>
         </div>
     )
 }

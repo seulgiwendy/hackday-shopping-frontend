@@ -69,3 +69,9 @@
     float: right;
     font-weight: 200;
 }
+
+.notice-paginator {
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+}
