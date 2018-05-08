@@ -19,6 +19,26 @@ Group.prototype.isActive = function() {
 }
 
 const dummyGroups = ['A그룹', 'B그룹', 'C그룹'];
+const dummyArticles = [
+    {
+        group: 'A그룹',
+        title: '김준현 설렁탕 특으로 먹는다',
+        date: '2018.05.01',
+        id: 1
+    },
+    {
+        group: 'A그룹',
+        title: '김준현 설렁탕 특으로 먹는다',
+        date: '2018.05.01',
+        id: 1
+    },
+    {
+        group: 'A그룹',
+        title: '김준현 설렁탕 특으로 먹는다',
+        date: '2018.05.01',
+        id: 1
+    }
+]
 
 class NoticeList extends Component {
 
@@ -28,13 +48,13 @@ class NoticeList extends Component {
         this.state = {
             currentPage: 1,
             totalPages: 5,
-            articles: [],
             groups: []
         }
         this.onPaginatorButtonClick = this.onPaginatorButtonClick.bind(this);
     }
 
     componentDidMount() {
+        console.log('mount!');
         this.setState({
             groups: dummyGroups.map((v, i) => {
                 if(i === 0) {
@@ -60,7 +80,7 @@ class NoticeList extends Component {
                     </div>
                     <GroupMenu groups={this.state.groups}/>
                 </div>
-                <NoticeItems/>
+                <NoticeItems articles={dummyArticles} currentPage={this.state.currentPage}/>
                 <Paginator totalPage={this.state.totalPages} currentPage={this.state.currentPage} clickHandler={this.onPaginatorButtonClick}/>
             </div>
         )

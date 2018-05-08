@@ -1,6 +1,7 @@
 .notice-container {
     width: 75%;
-    height: 700px;
+    min-height: 435px;
+
 
     margin: auto;
     margin-top: 50px;

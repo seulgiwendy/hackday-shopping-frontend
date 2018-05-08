@@ -2,14 +2,16 @@ import React from 'react';
 import Article from './Article';
 
 const NoticeItems = (props) => {
+
+    console.log(props.currentPage);
+
     return(
         <div className="notice-items">
                 <ul className="notice-itemlist">
-                    <Article title="김준현 설렁탕 특으로 먹는다" group="A그룹" date="2018.05.01"/>
-                    <Article title="김준현 설렁탕 특으로 먹는다" group="A그룹" date="2018.05.01"/>
-                    <Article title="김준현 설렁탕 특으로 먹는다" group="A그룹" date="2018.05.01"/>
-                    <Article title="김준현 설렁탕 특으로 먹는다" group="A그룹" date="2018.05.01"/>
-                    <Article title="김준현 설렁탕 특으로 먹는다" group="A그룹" date="2018.05.01"/>
+                    
+                    {props.articles.map((article, index) => {
+                        return(<Article title={article.title} group={article.group} date={article.date}/>)
+                    })}
                 </ul>
             </div>
     )
