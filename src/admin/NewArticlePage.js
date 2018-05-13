@@ -11,9 +11,13 @@ class NewArticlePage extends Component {
         super(props);
         this.editor;
         this.editorContainerRef;
+        this.fileTypes = "application/vnd.ms-excel, text/plain, text/csv, text/tab-separated-values";
+
+        this.onEditorContentChange = this.onEditorContentChange.bind(this);
 
         this.state = {
-            targetGroups: []
+            targetGroups: [],
+            wordCount: 0
         }
     }
 
@@ -28,6 +32,12 @@ class NewArticlePage extends Component {
         console.log(checkedGroup);
     }
 
+    onEditorContentChange() {
+        this.setState({
+            wordCount: this.editor.getMarkdown().length
+        })
+    }
+
     componentDidMount() {
         let Editor = require('tui-editor');
 
@@ -36,7 +46,15 @@ class NewArticlePage extends Component {
             initialEditType: 'wysiwyg',
             hideModeSwitch: true,
             previewStyle: 'vertical',
-            height: '500px'
+            height: '500px',
+            events: {
+                change: this.onEditorContentChange
+            },
+            hooks: {
+                addImageBlobHook: (blob, callback, source) => {
+                    callback('https://s3.ap-northeast-2.amazonaws.com/seulgiwendy.github.io-static/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA+2017-12-08+%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE+3.04.11.png', 'test');
+                }
+            }
         });
     }
 
@@ -46,7 +64,10 @@ class NewArticlePage extends Component {
                 <h3 className="articlewrite-pagetitle">새 공지사항</h3>
                 <GroupCheckbox onCheckPressed={this.onGroupCheckChanged.bind(this)}/>
                 <div className="articlewrite-editor-container" ref={ref => this.editorContainerRef = ref}>
-
+                    
+                </div>
+                <div className="articlewrite-wordcount">
+                    <h3 className="word-count">{this.state.wordCount}/1000</h3>
                 </div>
                 <div className="articlewrite-fileupload-container">
                     <div className="fileupload-header">
@@ -54,7 +75,7 @@ class NewArticlePage extends Component {
                         <p className="fileupload-caption">파일은 5MB 이하의 xlsx, xls, txt, csv, tsv만 업로드하실 수 있습니다.</p>
                     </div>
                     <div className="fileupload-component">
-                        <DropZone className="fileupload-dropzone">
+                        <DropZone accept={this.fileTypes} className="fileupload-dropzone">
                         &nbsp;
                             <div className="dropzone-element fileupload-dropzone-caption">파일을 이곳에 드래그 앤 드롭 하세요.</div>
                             <button className="dropzone-element fileupload-dropzone-click">클릭해서 파일 탐색</button> 

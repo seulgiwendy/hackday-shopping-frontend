@@ -1,7 +1,36 @@
-import React from 'react';
+import React, { Component } from 'react';
+import './login.css';
 
-const LoginBox = (props) => {
-    return(
+class LoginBox extends Component{
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      idInput: '',
+      pwdInput: ''
+    }
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onClickPress = this.onClickPress.bind(this);
+  }
+
+  onInputChange(e) {
+    if(e.target.id === 'userid') {
+      this.setState({
+        idInput: e.target.value
+      })
+      return;
+    }
+    this.setState({
+      pwdInput: e.target.value
+    })
+  }
+
+  onClickPress() {
+    this.props.handler('user token fake');
+  }
+    
+  render(){
+        return (
         <div className="login-container">
             <h2 className="login-welcome"><img src="http://imgshopping.naver.net/adcenter/web//h_sac_login_20140521.gif"/></h2>
             <h3 className="login-welcome-caption">쇼핑파트너존에 오신 것을 환영합니다.</h3>
@@ -11,10 +40,10 @@ const LoginBox = (props) => {
             </h6>
             <div className="login-box">
               <form className="login-form">
-                <input className="id-input" placeholder="ID를 입력하세요"/>
-                <input className="id-input password-input" placeholder="비밀번호를 입력하세요"/>
+                <input className="id-input" id="userid" placeholder="ID를 입력하세요" onChange={this.onInputChange}/>
+                <input className="id-input password-input" id="password" type="password "placeholder="비밀번호를 입력하세요" onChange={this.onInputChange}/>
               </form>
-              <img className="login-btn" src="http://imgshopping.naver.net/adcenter/web/login_btn.gif"/>
+              <a className="login-btn" onClick={this.onClickPress}><img src="http://imgshopping.naver.net/adcenter/web/login_btn.gif"/></a>
             </div>
             <div className="login-info">
               <p className="caption login-caption">
@@ -23,8 +52,10 @@ const LoginBox = (props) => {
               </p>
               <p className="caption login-contact"><strong style={{color:"black"}}>전화 : 1588-3819</strong>&nbsp;(오전 9 ~ 오후 6시, 토/일/공휴일 제외)</p>
             </div>
-          </div>
-    )
+        </div>
+        )
+  }
+    
 }
 
 export default LoginBox;
