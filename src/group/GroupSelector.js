@@ -4,7 +4,7 @@ import GroupCheckbox from './GroupCheckbox';
 
 const generateCheckboxes = (groups, handler) => {
     return groups.map((v, i) => {
-        return(<GroupCheckbox name={v.name} code={v.code} description={v.description} eventHandler={handler}/>)
+        return(<GroupCheckbox name={v.symbol} code={v.type} description={v.description} eventHandler={handler}/>)
     })
 }
 

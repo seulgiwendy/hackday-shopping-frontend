@@ -15,6 +15,13 @@ class LoginBox extends Component{
     this.onInputChange = this.onInputChange.bind(this);
     this.onClickPress = this.onClickPress.bind(this);
     this.onJoinClick = this.onJoinClick.bind(this);
+    this.changeShowJoin = this.changeShowJoin.bind(this);
+  }
+
+  changeShowJoin() {
+    this.setState({
+      showJoin: false
+    });
   }
 
   onInputChange(e) {
@@ -41,7 +48,7 @@ class LoginBox extends Component{
     
   render(){
       if(this.state.showJoin) {
-        return(<JoinBox/>);
+        return(<JoinBox finishJoin={this.changeShowJoin}/>);
       }
         return (
         <div className="login-container">
