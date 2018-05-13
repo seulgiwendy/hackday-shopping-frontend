@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
 import './join.css';
 import GroupSelecetor from '../group/GroupSelector';
+import JoinFormBox from './JoinFormBox';
 
 const testGroups = [
     {name: 'A그룹', code: 'GROUP_A', description: '그룹 설정 테스트를 위한 더미 데이터'},
@@ -22,15 +24,39 @@ class JoinBox extends Component {
         }
         this.onInputEvent = this.onInputEvent.bind(this);
         this.onGroupSelectEvent = this.onGroupSelectEvent.bind(this);
+        this.checkPwdIntegrity = this.checkPwdIntegrity.bind(this);
     }
 
     onInputEvent(e) {
-        if(e.target.id === 'idinput') {
-            this.setState({
-                idInput: e.target.value
-            });
+        let pwdInput, pwdCheck;
+
+        switch(e.target.id) {
+            case 'idinput':
+                this.setState({
+                    idInput: e.target.value
+                });
+                break;
+            case 'pwdinput':
+                this.setState({
+                    pwdInput: e.target.value,
+                });
+                break;
+            case 'pwdcheck':
+                pwdCheck = e.target.value;
+                this.setState({
+                    pwdCheck: e.target.value
+                });
         }
-        console.log(e.target)
+        this.checkPwdIntegrity();
+    }
+
+    checkPwdIntegrity() {
+        let pwdInput = document.getElementById('pwdinput').value;
+        let pwdCheck = document.getElementById('pwdcheck').value;
+
+        this.setState({
+            isValidPwd: pwdInput === pwdCheck
+        });        
     }
 
     onGroupSelectEvent(e) {
@@ -49,30 +75,16 @@ class JoinBox extends Component {
     }
 
     render() {
+        console.log(this.state.isValidPwd);
         return(
             <div className="login-container join-container">
                 <div className="join-title">
                     회원 가입
                 </div>
-                <div className="join-formbox">
-                    <form>
-                        <div className="join-textbox input-group">
-                            <span className="input-group-addon" id="idinput-caption">@</span>
-                            <input className="join-input join-idinput form-control" type="text" placeholder="ID" id="idinput" aria-describedby="idinput-caption" onChange={this.onInputEvent}/>
-                        </div>
-                        <div className="join-textbox input-group">
-                            <span className="input-group-addon" id="pwdinput-caption">비밀번호</span>
-                            <input className="join-input join-pwdinput form-control" type="password" placeholder="PWD" id="pwdinput"onChange={this.onInputEvent}/>
-                        </div>
-                        <div className="join-textbox input-group">
-                            <span className="input-group-addon" id="pwdcheck-caption">비밀번호 확인</span>
-                            <input className="join-input join-pwdinput join-pwdcheck form-control" type="password" placeholder="pwd check" id="pwdcheck"onChange={this.onInputEvent}/>   
-                        </div>
-                    </form>
-                </div>
+                <JoinFormBox onInputEvent={this.onInputEvent}/>
                 <GroupSelecetor groups={testGroups} onSelectHandler={this.onGroupSelectEvent}/>
                 <div className="join-submit">
-                    <button className="join-submitbtn btn btn-success">가입</button>
+                    <Button bsStyle="success" className="join-submitbtn" disabled={!this.state.isValidPwd}>가입</Button>
                 </div>
             </div>
         )

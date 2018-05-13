@@ -18,33 +18,40 @@ class App extends Component {
       userToken: undefined
     }
     this.onUserLogin = this.onUserLogin.bind(this);
-    
-    const HandledLoginBox = (props) => {
-      return(
-        <LoginBox onLogin={this.onUserLogin}/>
-      );
-    }
+    this.onUserLogout = this.onUserLogout.bind(this);
   }
 
   onUserLogin(token) {
     this.setState({
-      userToken: token
+      userToken: 123
+    });
+  }
+
+  onUserLogout() {
+    this.setState({
+      userToken: undefined
     });
   }
 
   render() {
     console.log(this.state.userToken);
+    if(this.state.userToken === undefined) {
+      return(
+        <div className="App">
+          <Header/>
+          <div className="body-container">
+            <LoginBox handler={this.onUserLogin}/>
+          </div>
+          <Footer/>
+        </div>
+      )
+    }
     return (
     <BrowserRouter>
       <div className="App">
         <Header/>
         <div className="body-container">
-          <Route exact path="/" render={(props) =>{
-            if(this.state.userToken === undefined) {
-              return <LoginBox handler={this.onUserLogin}/>
-            }
-            return <NoticeList/>
-          } }/>
+          <Route exact path="/" component={NoticeList}/>
           <Route exact path="/notice" component={NoticeList}/>
           <Route exact path="/article" component={ArticlePage}/>
           <Route exact path="/admin" component={NewArticlePage}/>
