@@ -15,15 +15,24 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userToken: undefined
+      userToken: undefined,
+      username: '',
+      usergroups: []
     }
     this.onUserLogin = this.onUserLogin.bind(this);
     this.onUserLogout = this.onUserLogout.bind(this);
   }
 
-  onUserLogin(token) {
+  onUserLogin(info) {
+    console.log(info);
+
+    let loginUsername = info.username;
+    let token = info.accessToken;
+    let groups = info.usergropus;
     this.setState({
-      userToken: 123
+      userToken: token,
+      username: loginUsername,
+      usergroups: groups
     });
   }
 
@@ -34,7 +43,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.userToken);
     if(this.state.userToken === undefined) {
       return(
         <div className="App">

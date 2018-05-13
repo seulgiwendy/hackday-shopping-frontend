@@ -10,12 +10,29 @@ class LoginBox extends Component{
     this.state = {
       idInput: '',
       pwdInput: '',
-      showJoin: false
+      showJoin: false,
+      fetchedToken: undefined
     }
     this.onInputChange = this.onInputChange.bind(this);
     this.onClickPress = this.onClickPress.bind(this);
     this.onJoinClick = this.onJoinClick.bind(this);
     this.changeShowJoin = this.changeShowJoin.bind(this);
+  }
+
+  _fetchUserToken(id, pwd) {
+    return fetch('http://localhost:8080/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        userid: id,
+        password: pwd
+      })
+    }).then(response => {
+      console.log(response);
+      return response.json();
+    }).then(json => {
+      console.log(json);
+      this.props.handler(json);
+    })
   }
 
   changeShowJoin() {
@@ -37,7 +54,7 @@ class LoginBox extends Component{
   }
 
   onClickPress() {
-    this.props.handler('user token fake');
+    this._fetchUserToken(this.state.idInput, this.state.pwdInput);
   }
 
   onJoinClick() {
