@@ -42,15 +42,6 @@ body::after {
   justify-content: flex-start;
 }
 
-.unread-notification {
-  position: absolute;
-
-  top: 7px;
-  right: 21px;
-  color: silver;
-  font-size: 13px;
-}
-
 .body-container {
   padding: 30px;
   height: 100%;

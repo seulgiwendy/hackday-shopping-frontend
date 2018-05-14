@@ -3,7 +3,7 @@ import { Route, BrowserRouter } from 'react-router-dom';
 import { PropsRoute } from 'react-router';
 import logo from './logo.svg';
 import './App.css';
-import Header from './Header';
+import Header from './header-area/Header';
 import Footer from './Footer';
 import LoginBox from './login/LoginBox';
 import NoticeList from './notice/NoticeList';
@@ -15,7 +15,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userToken: undefined,
+      userToken: 123,
       username: '',
       usergroups: []
     }
@@ -57,7 +57,7 @@ class App extends Component {
     return (
     <BrowserRouter>
       <div className="App">
-        <Header/>
+        <Header token={this.state.userToken} groups={this.state.usergroups} username={this.state.username}/>
         <div className="body-container">
           <Route exact path="/" component={NoticeList}/>
           <Route exact path="/notice" component={NoticeList}/>
