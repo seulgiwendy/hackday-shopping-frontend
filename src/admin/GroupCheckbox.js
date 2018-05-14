@@ -7,17 +7,17 @@ const GroupCheckbox = (props) => {
     return(
     <form className="articlewrite-info">
         <label htmlFor="title">제목</label>
-        <input className="articleinfo-input title-input" type="text" id="title"/>
-        <span className="group-selection-caption">그룹 선택</span>
-
-        {groups.map((v, i) => {
-            return(
-            <div className="group-selection-checkbox" key={i}>
-                <input className="group-input" type="checkbox" id={`group-${i}`} onClick={props.onCheckPressed}/>
-                <label htmlFor="groups" className="group-caption">{v}</label>
-            </div>
-            )
-        })}
+        <input className="articleinfo-input title-input" type="text" id="title" onChange={props.title}/>
+        <div className="articleinfo-input group-selection-box">
+            <label htmlFor="groups">그룹 선택</label>
+            <select id="groups" onChange={props.onCheckPressed}>
+            {props.groups.map((v, i) => {
+                return(
+                <option value={v.type}>{v.description}</option>
+                )
+            })}
+            </select>
+        </div>
     </form>
 )
 

@@ -4,6 +4,7 @@ import '../../node_modules/tui-editor/dist/tui-editor.css';
 import '../../node_modules/tui-editor/dist/tui-editor-contents.css';
 import DropZone from 'react-dropzone';
 import GroupCheckbox from './GroupCheckbox';
+import UploadedFiles from './UploadedFiles';
 
 class NewArticlePage extends Component {
 
@@ -11,25 +12,75 @@ class NewArticlePage extends Component {
         super(props);
         this.editor;
         this.editorContainerRef;
-        this.fileTypes = "application/vnd.ms-excel, text/plain, text/csv, text/tab-separated-values";
+        this.uploadedImage;
+        this.fileTypes = "application/vnd.ms-excel, text/plain, text/csv, text/tab-separated-values, image/png";
 
         this.onEditorContentChange = this.onEditorContentChange.bind(this);
+        this.onGroupCheckChanged = this.onGroupCheckChanged.bind(this);
+        this.onFileDrop = this.onFileDrop.bind(this);
+        this.onImageUpload = this.onImageUpload.bind(this);
+        this.onSubmitClick = this.onSubmitClick.bind(this);
+        this.onTitleChange = this.onTitleChange.bind(this);
+        this.setAvailableGroups = this.setAvailableGroups.bind(this);
+        this._fetchGroups = this._fetchGroups.bind(this);
+        this._uploadImage = this._uploadImage.bind(this);
+        this._uploadArticle = this._uploadArticle.bind(this);
 
         this.state = {
-            targetGroups: [],
+            writable: true,
+            availableGroups: [],
+            targetGroups: "A_GROUP",
+            uploadedFiles: [],
+            uploadedImage: undefined,
+            articleTitle: 'untitled',
             wordCount: 0
         }
     }
 
-    onGroupCheckChanged(event) {
-        let checkedGroup = [];
-        document.querySelectorAll('*[id^="group-"]').forEach((v, i) => {
-            if (v.checked) {
-                checkedGroup.push(v.id);
-            }
-        });
+    _fetchGroups() {
+        return fetch('http://localhost:8080/api/info/available-groups')
+        .then(response => {
+            return response.json()});
 
-        console.log(checkedGroup);
+    }
+
+    _uploadImage(file) {
+        let data = new FormData();
+
+        data.append('files', file);
+
+        let upload = undefined;
+        
+        return fetch('http://localhost:8080/api/upload/image', {
+            method: 'POST',
+            body: data
+        }).then(response => {
+            return response.json();
+        });
+    }
+
+    _uploadArticle(data) {
+        console.log(data);
+
+        let customHeader = new Headers();
+        customHeader.append('Content-Type', 'application/json;utf8');
+
+        fetch('http://localhost:8080/api/v1/article', {
+            method: 'POST',
+            headers: customHeader,
+            body: JSON.stringify(data)
+        }).then((res, error) => {
+            if(error) {
+                console.error(error);
+            }
+            console.log(res);
+        })
+    }
+
+    onGroupCheckChanged(event) {
+        this.setState({
+            targetGroups: event.target.value
+        })
     }
 
     onEditorContentChange() {
@@ -38,7 +89,61 @@ class NewArticlePage extends Component {
         })
     }
 
+    onFileDrop(files) {
+        let currentFiles = this.state.uploadedFiles;
+        let data = new FormData();
+
+        data.append('files', files[0]);
+
+        fetch('http://localhost:8080/api/upload/file', {
+            method: 'POST',
+            body: data
+        }).then(response => {
+            return response.json();
+        }).then(json => {
+            this.setState({
+                uploadedFiles: [...currentFiles, json]
+            });
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    onTitleChange(event) {
+        this.setState({
+            articleTitle: event.target.value
+        });
+    }
+
+    onSubmitClick() {
+        let articleContent = this.editor.getMarkdown();
+
+        let body = {
+            title: this.state.articleTitle,
+            content: articleContent,
+            targetGroups: this.state.targetGroups,
+            fileHref: this.state.uploadedFiles 
+        }
+
+        this._uploadArticle(body);
+    }
+
+    async onImageUpload(image) {
+        var result = await this._uploadImage(image);
+        return result;
+    }
+
+    async setAvailableGroups() {
+        let result = await this._fetchGroups();
+        console.log(result);
+        this.setState({
+            availableGroups: result,
+            targetGroups: result[0]
+        });
+    }
+
     componentDidMount() {
+        this.setAvailableGroups();
         let Editor = require('tui-editor');
 
         this.editor = new Editor({
@@ -52,17 +157,23 @@ class NewArticlePage extends Component {
             },
             hooks: {
                 addImageBlobHook: (blob, callback, source) => {
-                    callback('https://s3.ap-northeast-2.amazonaws.com/seulgiwendy.github.io-static/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA+2017-12-08+%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE+3.04.11.png', 'test');
+                    var result = this.onImageUpload(blob);
+
+                    result.then(link => {
+                        console.log(link);
+                        callback(`file://${link.encodedFileName}`, 'image');
+                    })
                 }
             }
         });
     }
 
     render() {
+        console.log(this.state.targetGroups);
         return(
             <div className="articlewrite-container">
                 <h3 className="articlewrite-pagetitle">새 공지사항</h3>
-                <GroupCheckbox onCheckPressed={this.onGroupCheckChanged.bind(this)}/>
+                <GroupCheckbox groups={this.state.availableGroups} onCheckPressed={this.onGroupCheckChanged.bind(this)} title={this.onTitleChange}/>
                 <div className="articlewrite-editor-container" ref={ref => this.editorContainerRef = ref}>
                     
                 </div>
@@ -75,12 +186,16 @@ class NewArticlePage extends Component {
                         <p className="fileupload-caption">파일은 5MB 이하의 xlsx, xls, txt, csv, tsv만 업로드하실 수 있습니다.</p>
                     </div>
                     <div className="fileupload-component">
-                        <DropZone accept={this.fileTypes} className="fileupload-dropzone">
+                        <DropZone accept={this.fileTypes} onDrop={this.onFileDrop} className="fileupload-dropzone">
                         &nbsp;
                             <div className="dropzone-element fileupload-dropzone-caption">파일을 이곳에 드래그 앤 드롭 하세요.</div>
                             <button className="dropzone-element fileupload-dropzone-click">클릭해서 파일 탐색</button> 
                         </DropZone>
                     </div>
+                    <UploadedFiles files={this.state.uploadedFiles}/>
+                </div>
+                <div className="articlewrite-submit">
+                    <button className="btn btn-success" onClick={this.onSubmitClick}>공지사항 등록</button>
                 </div>
             </div>
         )

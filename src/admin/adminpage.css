@@ -29,11 +29,11 @@
 
 .group-selection-caption {
     display: inline-block;
-    margin: 0 20px;
+    
 }
 
 .group-selection-checkbox {
-    display: inline-block;
+    margin-bottom: 5px;
 }
 
 .group-caption {
@@ -58,4 +58,25 @@
 
 .dropzone-element {
     display: block;
+}
+
+.fileupload-uploaded {
+    padding: 5px 10%;
+}
+
+.uploaded-files {
+    display: flex;
+    align-items: center;
+    
+    height: 30px;
+    width: 100%;
+    background-color: rgb(245, 245, 245);
+    border: 1px silver solid;
+
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+
+.attached-icon {
+    margin-right: 5px;
 }
