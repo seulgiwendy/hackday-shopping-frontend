@@ -23,7 +23,7 @@ class ArticlePage extends Component {
         let header = new Headers();
         header.append('Authorization', `Bearer ${token}`);
 
-        fetch(`http://localhost:8080/api/v1/article?id=${id}`, {
+        fetch(`http://adm-api.wheejuni.com/api/v1/article?id=${id}`, {
             method: 'GET',
             headers: header
         }).then(response => {

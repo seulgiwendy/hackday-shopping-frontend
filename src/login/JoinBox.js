@@ -14,6 +14,7 @@ class JoinBox extends Component {
         this.state = {
             availableGroups: [],
             selectedGroups: [],
+            nameInput: '',
             idInput: '',
             pwdInput: '',
             pwdCheck: '',
@@ -29,7 +30,7 @@ class JoinBox extends Component {
     }
 
     _fetchGroups() {
-        fetch('http://localhost:8080/api/info/available-groups')
+        fetch('http://adm-api.wheejuni.com/api/info/available-groups')
         .then(response => {
             console.log(response);
             return response.json();
@@ -45,10 +46,11 @@ class JoinBox extends Component {
         let custonHeaders = new Headers();
         custonHeaders.append("Content-Type", "application/json;utf8")
 
-        fetch('http://localhost:8080/api/user/join', {
+        fetch('http://adm-api.wheejuni.com/api/user/join', {
             method: 'POST',
             headers: custonHeaders,
             body: JSON.stringify({
+                name: this.state.nameInput,
                 id: this.state.idInput,
                 password: this.state.pwdInput,
                 selectedGroups: this.state.selectedGroups
@@ -68,6 +70,13 @@ class JoinBox extends Component {
         let pwdInput, pwdCheck;
 
         switch(e.target.id) {
+
+            case 'nameinput':
+                this.setState({
+                    nameInput: e.target.value
+                });
+                break;
+
             case 'idinput':
                 this.setState({
                     idInput: e.target.value
@@ -90,9 +99,10 @@ class JoinBox extends Component {
     checkPwdIntegrity() {
         let pwdInput = document.getElementById('pwdinput').value;
         let pwdCheck = document.getElementById('pwdcheck').value;
+        let name = document.getElementById('nameinput').value;
 
         this.setState({
-            isValidPwd: pwdInput === pwdCheck
+            isValidPwd: pwdInput === pwdCheck && name.length > 0
         });        
     }
 

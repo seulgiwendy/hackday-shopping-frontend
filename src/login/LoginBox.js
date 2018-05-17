@@ -21,7 +21,7 @@ class LoginBox extends Component{
   }
 
   _fetchUserToken(id, pwd) {
-    return fetch('http://localhost:8080/login', {
+    return fetch('http://adm-api.wheejuni.com/login', {
       method: 'POST',
       body: JSON.stringify({
         userid: id,

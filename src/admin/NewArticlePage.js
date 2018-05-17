@@ -39,7 +39,7 @@ class NewArticlePage extends Component {
     }
 
     _fetchGroups() {
-        return fetch('http://localhost:8080/api/info/available-groups')
+        return fetch('http://adm-api.wheejuni.com/api/info/available-groups')
         .then(response => {
             return response.json()});
 
@@ -52,7 +52,7 @@ class NewArticlePage extends Component {
 
         let upload = undefined;
         
-        return fetch('http://localhost:8080/api/upload/image', {
+        return fetch('http://adm-api.wheejuni.com/api/upload/image', {
             method: 'POST',
             body: data
         }).then(response => {
@@ -67,7 +67,7 @@ class NewArticlePage extends Component {
         customHeader.append('Content-Type', 'application/json;utf8');
         customHeader.append('Authorization', `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVU0VSX1RBUkdFVEdST1VQUyI6WyJDX0dST1VQIiwiQl9HUk9VUCJdLCJVU0VSTkFNRSI6IuydtOunkOuFhCIsIlVTRVJfSUQiOjIsIlVTRVJfUk9MRSI6IlJPTEVfVVNFUiJ9.8m1EPL5gjVKci4_asZ2wGeBF_tc961AT8oEuTlWMiis`)
 
-        fetch('http://localhost:8080/api/v1/article', {
+        fetch('http://adm-api.wheejuni.com/api/v1/article', {
             method: 'POST',
             headers: customHeader,
             body: JSON.stringify(data)
@@ -80,6 +80,7 @@ class NewArticlePage extends Component {
     }
 
     onGroupCheckChanged(event) {
+        console.log(event.target.value);
         this.setState({
             targetGroups: event.target.value
         })
@@ -97,12 +98,13 @@ class NewArticlePage extends Component {
 
         data.append('files', files[0]);
 
-        fetch('http://localhost:8080/api/upload/file', {
+        fetch('http://adm-api.wheejuni.com/api/upload/file', {
             method: 'POST',
             body: data
         }).then(response => {
             return response.json();
         }).then(json => {
+            console.log(json);
             this.setState({
                 uploadedFiles: [...currentFiles, json]
             });
@@ -123,7 +125,7 @@ class NewArticlePage extends Component {
         let body = {
             title: this.state.articleTitle,
             content: articleContent,
-            targetGroups: this.state.targetGroups.type,
+            targetGroups: this.state.targetGroups,
             fileHref: this.state.uploadedFiles 
         }
 
@@ -140,7 +142,7 @@ class NewArticlePage extends Component {
         console.log(result);
         this.setState({
             availableGroups: result,
-            targetGroups: result[0]
+            targetGroups: result[0].type
         });
     }
 
@@ -171,7 +173,6 @@ class NewArticlePage extends Component {
     }
 
     render() {
-        console.log(this.state.targetGroups);
         return(
             <div className="articlewrite-container">
                 <h3 className="articlewrite-pagetitle">새 공지사항</h3>

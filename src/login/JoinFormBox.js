@@ -5,6 +5,10 @@ const JoinFormBox = (props) => {
         <div className="join-formbox">
             <form>
                 <div className="join-textbox input-group">
+                    <span className="input-group-addon" id="nameinput-caption">이름</span>
+                    <input className="join-input join-nameinput form-control" type="text" placeholder="이름을 입력하세요" id="nameinput" aria-describedby="nameinput-caption" onChange={props.onInputEvent}/>
+                </div>
+                <div className="join-textbox input-group">
                     <span className="input-group-addon" id="idinput-caption">@</span>
                     <input className="join-input join-idinput form-control" type="text" placeholder="ID" id="idinput" aria-describedby="idinput-caption" onChange={props.onInputEvent}/>
                 </div>

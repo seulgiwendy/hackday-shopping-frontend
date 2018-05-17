@@ -26,7 +26,7 @@ class NoticeList extends Component {
         header.append('Authorization', `Bearer ${this.props.token}`);
         header.append('Content-Type', 'application/json;utf8');
 
-        fetch('http://localhost:8080/api/v1/articlelist', {
+        fetch('http://adm-api.wheejuni.com/api/v1/articlelist', {
             method: 'POST',
             headers: header,
             body: JSON.stringify({
