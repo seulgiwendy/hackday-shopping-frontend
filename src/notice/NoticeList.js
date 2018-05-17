@@ -11,17 +11,18 @@ class NoticeList extends Component {
         super(props);
 
         this.state = {
-            currentPage: 0,
+            currentPage: 1,
             pageSize: 3,
             totalPages: 5,
-            currentArticles: [],
-            groups: this.props.groups
+            groups: this.props.groups,
+            articles: []
         }
         this.onPaginatorButtonClick = this.onPaginatorButtonClick.bind(this);
-        this._fetchArticles = this._fetchArticles.bind(this);
+        this.onLoadingPageCount = this.onLoadingPageCount.bind(this);
+        this._fetchList = this._fetchList.bind(this);
     }
 
-    _fetchArticles() {
+    _fetchList() {
         let header = new Headers();
         header.append('Authorization', `Bearer ${this.props.token}`);
         header.append('Content-Type', 'application/json;utf8');
@@ -30,37 +31,62 @@ class NoticeList extends Component {
             method: 'POST',
             headers: header,
             body: JSON.stringify({
-                itemPerPage: this.state.pageSize,
-                currentPage: this.state.currentPage
+                itemPerPage: 3,
+                currentPage: this.state.currentPage - 1
             })
-        }).then(response => {
-            console.log(response);
-            return response.json();
+        }).then(res => {
+            return res.json();
         }).then(json => {
-            console.log(json);
             this.setState({
-                currentArticles: json.items,
-                totalPages: json.totalPageRequested
-            });
-        })
-    }
-
-    onPaginatorButtonClick(event, pagenumber) {
-        this.setState({
-            currentPage: pagenumber
+                totalPages: json.totalPageRequested,
+                articles: json.items
+            })
         });
     }
 
-    onGroupButtonClick() {
+    _fetchSingleList(page) {
+        let header = new Headers();
+        header.append('Authorization', `Bearer ${this.props.token}`);
+        header.append('Content-Type', 'application/json;utf8');
 
+        return fetch('http://adm-api.wheejuni.com/api/v1/articlelist', {
+            method: 'POST',
+            headers: header,
+            body: JSON.stringify({
+                itemPerPage: 3,
+                currentPage: page - 1
+            })
+        }).then(res => {
+            return res.json();
+        }).then(json => {
+            return json.items
+        });
+        
+    }
+
+    onLoadingPageCount(maxPage) {
+        this.setState({
+            totalPages: maxPage
+        });
+    }
+
+    async onPaginatorButtonClick(event, pagenumber) {
+        let fetchedArticles = await this._fetchSingleList(pagenumber);
+        console.log(fetchedArticles, pagenumber);
+
+        this.setState({
+            currentPage: pagenumber,
+            articles: fetchedArticles
+        });
+        
     }
 
     componentDidMount() {
-        this._fetchArticles();
+        this._fetchList();
     }
 
     render() {
-        console.log(this.state.currentArticles);
+        console.log(this.state.currentPage);
         return(
             <div className="notice-container">
                 <div className="notice-header">
@@ -69,8 +95,8 @@ class NoticeList extends Component {
                     </div>
                     <GroupMenu groups={this.props.groups}/>
                 </div>
-                <NoticeItems articles={this.state.currentArticles} currentPage={this.state.currentPage}/>
-                <Paginator totalPage={this.state.totalPages} currentPage={this.state.currentPage + 1} clickHandler={this.onPaginatorButtonClick}/>
+                <NoticeItems articles={this.state.articles}/>
+                <Paginator totalPage={this.state.totalPages} currentPage={this.state.currentPage} clickHandler={this.onPaginatorButtonClick}/>
             </div>
         )
     }

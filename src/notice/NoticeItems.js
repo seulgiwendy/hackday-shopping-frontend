@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Article from './Article';
 
 const emptyNotice = (
@@ -8,19 +8,17 @@ const emptyNotice = (
 )
 
 const NoticeItems = (props) => {
-
-    console.log(props.currentPage);
-
     return(
         <div className="notice-items">
-                <ul className="notice-itemlist">
-                    
-                    {props.articles.length > 0 ? props.articles.map((article, index) => {
-                        return(<Article title={article.title} group={article.group} date={article.date} href={article.href}/>)
-                    }): emptyNotice}
-                </ul>
-            </div>
+            <ul className="notice-itemlist">
+                
+                {props.articles.length > 0 ? props.articles.map((article, index) => {
+                    return(<Article title={article.title} group={article.group} date={article.date} href={article.href}/>)
+                }): emptyNotice}
+            </ul>
+        </div>
     )
+
 }
 
 export default NoticeItems;

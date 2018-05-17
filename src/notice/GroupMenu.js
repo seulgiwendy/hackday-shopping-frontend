@@ -12,7 +12,6 @@ const getGroupButtons = (group) => {
 }
 
 const GroupMenu = (props) => {
-    console.log(props.groups);
     return(
         <div className="notice-header-icons">
             <ul>

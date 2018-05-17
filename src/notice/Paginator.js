@@ -8,14 +8,14 @@ const activePageClick = (event) => {
 const generatePageButtons = (count, active, handler) => {
     let buttons = [];
 
-    for(let i = 0; i < count; i++) {
+    for(let i = 1; i < count + 1; i++) {
 
-        if(i + 1 === active) {
-            buttons.push(<PageButton pagenumber={i + 1} clickHandler={activePageClick} active={true}/>)
+        if(i === active) {
+            buttons.push(<PageButton pagenumber={i} clickHandler={activePageClick} active={true}/>)
             continue;
         }
 
-        buttons.push(<PageButton pagenumber={i + 1} clickHandler={handler}/>)
+        buttons.push(<PageButton pagenumber={i} clickHandler={handler}/>)
     }
 
     return buttons;
