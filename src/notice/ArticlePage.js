@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import FileItem from '../admin/FileItem';
 import ArticleContent from './ArticleContent';
 import './article.css';
+import UploadedFiles from '../admin/UploadedFiles';
 
 
 class ArticlePage extends Component {
@@ -59,6 +60,7 @@ class ArticlePage extends Component {
         this._fetchContent(articleId, userToken);
     }
     render() {
+        console.log(this.state);
         return(
         <div className="article-container">    
             <div className="article-content-body">
@@ -77,7 +79,7 @@ class ArticlePage extends Component {
             </div>
             <div className="article-file-contents">
                 <h3 className="filecontents-caption">첨부된 파일</h3>
-                <FileItem filename="seulgi.png"/>
+                <UploadedFiles files={this.state.files} articlePage={true}/>
             </div>
             </div>
         </div>
