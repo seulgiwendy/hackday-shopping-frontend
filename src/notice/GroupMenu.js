@@ -5,13 +5,14 @@ const getGroupButtons = (group) => {
     let groups = []
 
     group.forEach((v, i) => {
-        groups.push(<GroupButton groupname={v.name} active={v.isActive()}/>)
+        groups.push(<GroupButton groupname={v.symbol} active={true}/>)
     });
 
     return groups;
 }
 
 const GroupMenu = (props) => {
+    console.log(props.groups);
     return(
         <div className="notice-header-icons">
             <ul>

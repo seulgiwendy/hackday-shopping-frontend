@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import './adminpage.css';
 import '../../node_modules/tui-editor/dist/tui-editor.css';
 import '../../node_modules/tui-editor/dist/tui-editor-contents.css';
@@ -64,6 +65,7 @@ class NewArticlePage extends Component {
 
         let customHeader = new Headers();
         customHeader.append('Content-Type', 'application/json;utf8');
+        customHeader.append('Authorization', `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVU0VSX1RBUkdFVEdST1VQUyI6WyJDX0dST1VQIiwiQl9HUk9VUCJdLCJVU0VSTkFNRSI6IuydtOunkOuFhCIsIlVTRVJfSUQiOjIsIlVTRVJfUk9MRSI6IlJPTEVfVVNFUiJ9.8m1EPL5gjVKci4_asZ2wGeBF_tc961AT8oEuTlWMiis`)
 
         fetch('http://localhost:8080/api/v1/article', {
             method: 'POST',
@@ -121,7 +123,7 @@ class NewArticlePage extends Component {
         let body = {
             title: this.state.articleTitle,
             content: articleContent,
-            targetGroups: this.state.targetGroups,
+            targetGroups: this.state.targetGroups.type,
             fileHref: this.state.uploadedFiles 
         }
 
@@ -203,4 +205,4 @@ class NewArticlePage extends Component {
     
 }
 
-export default NewArticlePage;
+export default withRouter(NewArticlePage);

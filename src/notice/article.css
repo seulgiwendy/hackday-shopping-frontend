@@ -30,6 +30,22 @@
 
 .article-contents {
     padding-top: 25px;
+    margin-bottom: 50px;
+
+    min-height: 350px;
+}
+
+.article-file-contents {
+    border-top: 1px silver solid;
+    
+
+    width: 80%;
+    margin: 0 auto;
+}
+
+.filecontents-caption {
+    font-weight: 300;
+    margin-bottom: 50px;
 }
 
 .article-timestamp {

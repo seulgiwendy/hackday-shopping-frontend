@@ -17,6 +17,7 @@ class LoginBox extends Component{
     this.onClickPress = this.onClickPress.bind(this);
     this.onJoinClick = this.onJoinClick.bind(this);
     this.changeShowJoin = this.changeShowJoin.bind(this);
+    this._fetchUserToken = this._fetchUserToken.bind(this);
   }
 
   _fetchUserToken(id, pwd) {

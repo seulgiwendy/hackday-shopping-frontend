@@ -15,7 +15,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userToken: 123,
+      userToken: undefined,
       username: '',
       usergroups: []
     }
@@ -28,7 +28,7 @@ class App extends Component {
 
     let loginUsername = info.username;
     let token = info.accessToken;
-    let groups = info.usergropus;
+    let groups = info.usergroups;
     this.setState({
       userToken: token,
       username: loginUsername,
@@ -59,9 +59,9 @@ class App extends Component {
       <div className="App">
         <Header token={this.state.userToken} groups={this.state.usergroups} username={this.state.username}/>
         <div className="body-container">
-          <Route exact path="/" component={NoticeList}/>
+          <Route exact path="/" render={() => <NoticeList token={this.state.userToken} groups={this.state.usergroups}/>}/>
           <Route exact path="/notice" component={NoticeList}/>
-          <Route exact path="/article" component={ArticlePage}/>
+          <Route exact path="/article/:id" render={({match}) => <ArticlePage routeinfo={match} token={this.state.userToken}/>}/>
           <Route exact path="/admin" component={NewArticlePage}/>
           <Route exact path="/join" component={JoinBox}/>
         </div>
