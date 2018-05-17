@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './notice.css';
 import NoticeItems from './NoticeItems';
 import Paginator from './Paginator';
@@ -72,7 +73,6 @@ class NoticeList extends Component {
 
     async onPaginatorButtonClick(event, pagenumber) {
         let fetchedArticles = await this._fetchSingleList(pagenumber);
-        console.log(fetchedArticles, pagenumber);
 
         this.setState({
             currentPage: pagenumber,
@@ -86,17 +86,18 @@ class NoticeList extends Component {
     }
 
     render() {
-        console.log(this.state.currentPage);
         return(
             <div className="notice-container">
                 <div className="notice-header">
                     <div className="notice-header-caption">
                         <h3 className="notice-title">공지사항</h3>
+                        
                     </div>
                     <GroupMenu groups={this.props.groups}/>
                 </div>
                 <div className="notice-items-group">
                     <NoticeItems articles={this.state.articles}/>
+                    <Link to='/admin' className="notice-title-write">공지사항 작성하기</Link>
                 </div>
                 <Paginator totalPage={this.state.totalPages} currentPage={this.state.currentPage} clickHandler={this.onPaginatorButtonClick}/>
             </div>

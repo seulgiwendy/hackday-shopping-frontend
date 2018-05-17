@@ -1,7 +1,6 @@
 import React from 'react';
 
 const HeaderNotificationBox = (props) => {
-    console.log(props.items);
     return(
         <div className="unread-notification-box">
             <span className="fas fa-caret-up notification-pointer"/>

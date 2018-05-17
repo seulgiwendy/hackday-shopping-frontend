@@ -6,12 +6,11 @@ const viewer = (ref, content) => {
         el: ref,
         viewer: true,
         height: '300px',
-        initialValue: 'ㅎㅇㅎㅇㅎㅇㅎㅇ'
+        initialValue: ''
     });
 }
 
 const ArticleContent = (props) => {
-    console.log(props.ref);
     viewer(props.ref, props.content);
     return(
         <div/>

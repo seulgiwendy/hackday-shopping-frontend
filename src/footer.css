@@ -1,0 +1,19 @@
+.app-footer {
+    padding: 20px 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: white;
+}
+
+.footer-elements {
+    display: inline-block;
+    margin: 0 10px;
+
+    font-weight: 300;
+}
+
+.footer-copyright {
+    text-align: center;
+}

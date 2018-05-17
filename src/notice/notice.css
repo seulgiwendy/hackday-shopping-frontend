@@ -16,6 +16,13 @@
 .notice-title {
     font-weight: 300;
     font-family: 'Nanum Gothic', sans-serif;
+
+    display: inline-block;
+
+}
+
+.notice-title-write {
+    display: inline-block;
 }
 
 .notice-categories {

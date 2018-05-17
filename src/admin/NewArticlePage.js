@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import './adminpage.css';
 import '../../node_modules/tui-editor/dist/tui-editor.css';
 import '../../node_modules/tui-editor/dist/tui-editor-contents.css';
@@ -28,6 +28,7 @@ class NewArticlePage extends Component {
         this._uploadArticle = this._uploadArticle.bind(this);
 
         this.state = {
+            submitFinished: false,
             writable: true,
             availableGroups: [],
             targetGroups: "A_GROUP",
@@ -61,11 +62,9 @@ class NewArticlePage extends Component {
     }
 
     _uploadArticle(data) {
-        console.log(data);
-
         let customHeader = new Headers();
         customHeader.append('Content-Type', 'application/json;utf8');
-        customHeader.append('Authorization', `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVU0VSX1RBUkdFVEdST1VQUyI6WyJDX0dST1VQIiwiQl9HUk9VUCJdLCJVU0VSTkFNRSI6IuydtOunkOuFhCIsIlVTRVJfSUQiOjIsIlVTRVJfUk9MRSI6IlJPTEVfVVNFUiJ9.8m1EPL5gjVKci4_asZ2wGeBF_tc961AT8oEuTlWMiis`)
+        customHeader.append('Authorization', `Bearer ${this.props.token}`)
 
         fetch('http://adm-api.wheejuni.com/api/v1/article', {
             method: 'POST',
@@ -73,14 +72,16 @@ class NewArticlePage extends Component {
             body: JSON.stringify(data)
         }).then((res, error) => {
             if(error) {
-                console.error(error);
+                window.alert(error);
             }
-            console.log(res);
+            window.alert("공지사항이 정상적으로 등록되었습니다.");
+            this.setState({
+                submitFinished: true
+            });
         })
     }
 
     onGroupCheckChanged(event) {
-        console.log(event.target.value);
         this.setState({
             targetGroups: event.target.value
         })
@@ -104,12 +105,11 @@ class NewArticlePage extends Component {
         }).then(response => {
             return response.json();
         }).then(json => {
-            console.log(json);
             this.setState({
                 uploadedFiles: [...currentFiles, json]
             });
         }).catch(err => {
-            console.log(err);
+            window.alert(err);
         });
     }
 
@@ -139,7 +139,6 @@ class NewArticlePage extends Component {
 
     async setAvailableGroups() {
         let result = await this._fetchGroups();
-        console.log(result);
         this.setState({
             availableGroups: result,
             targetGroups: result[0].type
@@ -165,7 +164,7 @@ class NewArticlePage extends Component {
 
                     result.then(link => {
                         console.log(link);
-                        callback(`file://${link.encodedFileName}`, 'image');
+                        callback(`http://cdn.wheejuni.com${link.encodedFileName}`, 'image');
                     })
                 }
             }
@@ -173,6 +172,11 @@ class NewArticlePage extends Component {
     }
 
     render() {
+
+        if(this.state.submitFinished) {
+            return <Redirect to="/"/>
+        }
+
         return(
             <div className="articlewrite-container">
                 <h3 className="articlewrite-pagetitle">새 공지사항</h3>

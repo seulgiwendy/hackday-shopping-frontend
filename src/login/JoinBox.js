@@ -32,10 +32,8 @@ class JoinBox extends Component {
     _fetchGroups() {
         fetch('http://adm-api.wheejuni.com/api/info/available-groups')
         .then(response => {
-            console.log(response);
             return response.json();
         }).then(json => {
-            console.log(json);
             this.setState({
                 availableGroups: json
             })
@@ -136,7 +134,6 @@ class JoinBox extends Component {
                 <LoginBox/>
             )
         }
-        console.log(this.state.selectedGroups);
         return(
             <div className="login-container join-container">
                 <div className="join-title">

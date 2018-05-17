@@ -10,6 +10,7 @@ import NoticeList from './notice/NoticeList';
 import ArticlePage from './notice/ArticlePage';
 import NewArticlePage from './admin/NewArticlePage';
 import JoinBox from './login/JoinBox';
+import EditArticlePage from './notice/EditArticlePage';
 
 class App extends Component {
   constructor(props) {
@@ -24,8 +25,6 @@ class App extends Component {
   }
 
   onUserLogin(info) {
-    console.log(info);
-
     let loginUsername = info.username;
     let token = info.accessToken;
     let groups = info.usergroups;
@@ -63,7 +62,8 @@ class App extends Component {
           <Route exact path="/" render={() => <NoticeList token={this.state.userToken} groups={this.state.usergroups}/>}/>
           <Route exact path="/notice" component={NoticeList}/>
           <Route exact path="/article/:id" render={({match}) => <ArticlePage routeinfo={match} token={this.state.userToken}/>}/>
-          <Route exact path="/admin" component={NewArticlePage}/>
+          <Route exact path="/admin" render={() => <NewArticlePage token={this.state.userToken}/>}/>
+          <Route exact path="/edit/:id" render={({match}) => <EditArticlePage target={match.params} token={this.state.userToken}/>}/>
           <Route exact path="/join" component={JoinBox}/>
         </div>
         <Footer/>

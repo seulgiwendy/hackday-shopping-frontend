@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import FileItem from '../admin/FileItem';
 import ArticleContent from './ArticleContent';
 import './article.css';
 import UploadedFiles from '../admin/UploadedFiles';
+import EditButtons from './EditButtons';
 
 
 class ArticlePage extends Component {
@@ -11,12 +13,15 @@ class ArticlePage extends Component {
         this.state = {
             title: '',
             registeredDate: '',
-            files: []
+            files: [],
+            editable: false,
+            editmode: false
         };
         this.contentAreaRef;
         this.viewer; 
 
         this._fetchContent = this._fetchContent.bind(this);
+        this.onArticleEdit = this.onArticleEdit.bind(this);
     }
 
     _fetchContent(id, token) {
@@ -28,14 +33,13 @@ class ArticlePage extends Component {
             method: 'GET',
             headers: header
         }).then(response => {
-            console.log(response)
             return response.json();
         }).then(json => {
-            console.log(json);
             this.setState({
                 title: json.title,
                 registeredDate: json.lastModifiedAt,
-                files: json.files
+                files: json.files,
+                editable: json.editable
             });
             this.viewer.setMarkdown(json.content);
         });
@@ -43,11 +47,19 @@ class ArticlePage extends Component {
         this.viewer.setValue('*value changed*');
     }
 
+    onArticleDelete() {
+
+    }
+
+    onArticleEdit() {
+        this.setState({
+            editmode: true
+        });
+    }
+
     componentDidMount() {
         let articleId = this.props.routeinfo.params.id;
         let userToken = this.props.token;
-
-        console.log(`requested article id: ${articleId}, user token: ${userToken}`)
 
         let Editor = require('tui-editor');
         this.viewer = new Editor.factory({
@@ -60,7 +72,11 @@ class ArticlePage extends Component {
         this._fetchContent(articleId, userToken);
     }
     render() {
-        console.log(this.state);
+        if(this.state.editmode) {
+            return(
+                <Redirect to={`/edit/${this.props.routeinfo.params.id}`}/>
+            )
+        }
         return(
         <div className="article-container">    
             <div className="article-content-body">
@@ -71,8 +87,8 @@ class ArticlePage extends Component {
                 </div>
             <div className="article-contents">
                 <div className="article-timestamp">
-                        {this.state.registeredDate}
-                    </div>
+                        <div className="article-writetime">{this.state.registeredDate}</div>
+                </div>
                 <div className="article-contents-text" ref={ref => this.contentAreaRef = ref}>
                     
                 </div>
@@ -81,6 +97,8 @@ class ArticlePage extends Component {
                 <h3 className="filecontents-caption">첨부된 파일</h3>
                 <UploadedFiles files={this.state.files} articlePage={true}/>
             </div>
+            {this.state.editable ? <EditButtons edit={this.onArticleEdit} delete={this.onArticleDelete}/> : undefined}
+
             </div>
         </div>
         )

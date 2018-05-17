@@ -20,10 +20,8 @@ class Header extends Component {
     _fetchNotification() {
         fetch(`http://adm-api.wheejuni.com/api/event/staticevent/${this.props.userid}`)
         .then(res => {
-            console.log(res);
             return res.json();
         }).then(json => {
-            console.log(json);
             this.setState({
                 unreadNotifications: json.unreadNotificationsCount,
                 notifications: json.notifications
@@ -33,7 +31,6 @@ class Header extends Component {
 
     _flushNotification() {
         let idArray = this.state.notifications.map(v => v.NOTIFICATION_ID);
-        console.log(idArray);
 
         let header = new Headers();
         header.append('Content-Type', 'application/json');
@@ -58,7 +55,6 @@ class Header extends Component {
     }
     
     render() {
-        console.log(this.state.unreadNotifications);
         return(
             <header className="app-header">
               <HeaderLogos/>
