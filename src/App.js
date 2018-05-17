@@ -30,6 +30,7 @@ class App extends Component {
     let token = info.accessToken;
     let groups = info.usergroups;
     this.setState({
+      userid: info.userid,
       userToken: token,
       username: loginUsername,
       usergroups: groups
@@ -57,7 +58,7 @@ class App extends Component {
     return (
     <BrowserRouter>
       <div className="App">
-        <Header token={this.state.userToken} groups={this.state.usergroups} username={this.state.username}/>
+        <Header token={this.state.userToken} groups={this.state.usergroups} username={this.state.username} userid={this.state.userid}/>
         <div className="body-container">
           <Route exact path="/" render={() => <NoticeList token={this.state.userToken} groups={this.state.usergroups}/>}/>
           <Route exact path="/notice" component={NoticeList}/>

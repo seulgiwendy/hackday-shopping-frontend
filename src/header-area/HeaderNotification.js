@@ -15,7 +15,7 @@ const HeaderNotification = (props) => {
         <div className="unread-notification">
             <div className="unread-caption notification-items">안녕하세요, {props.name}님</div>
             <HeaderNotificationButton onClickHandler={props.handler} new={props.newCount} expanded={props.expanded}/>
-            {props.expanded ? <HeaderNotificationBox/> : undefined}
+            {props.expanded ? <HeaderNotificationBox items={props.items}/> : undefined}
         </div>
     )
 }

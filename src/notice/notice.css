@@ -38,6 +38,9 @@
     border-bottom: 1px silver solid;
 }
 
+.notice-items-group {
+    min-height: 400px;
+}
 .notice-header-caption {
     float: left;
 }

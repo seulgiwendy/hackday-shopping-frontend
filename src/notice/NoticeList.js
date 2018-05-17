@@ -95,7 +95,9 @@ class NoticeList extends Component {
                     </div>
                     <GroupMenu groups={this.props.groups}/>
                 </div>
-                <NoticeItems articles={this.state.articles}/>
+                <div className="notice-items-group">
+                    <NoticeItems articles={this.state.articles}/>
+                </div>
                 <Paginator totalPage={this.state.totalPages} currentPage={this.state.currentPage} clickHandler={this.onPaginatorButtonClick}/>
             </div>
         )

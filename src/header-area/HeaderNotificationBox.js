@@ -1,6 +1,7 @@
 import React from 'react';
 
 const HeaderNotificationBox = (props) => {
+    console.log(props.items);
     return(
         <div className="unread-notification-box">
             <span className="fas fa-caret-up notification-pointer"/>
@@ -13,19 +14,11 @@ const HeaderNotificationBox = (props) => {
                         새로운 알림
                     </div>
                     <ul className="inbox-list-elements">
-                        <li className="notification-element">새로운 공지사항이 있습니다.</li>
-                        <li className="notification-element">새로운 공지사항이 있습니다.</li>
-                        <li className="notification-element">새로운 공지사항이 있습니다.</li>
-                        <li className="notification-element">새로운 공지사항이 있습니다.</li>
+                        {props.items.filter(v => !v.READ).map((v, i) => {
+                            return <li className="notification-element">{v.message}</li>
+                        })}
                     </ul>
-                    <div className="inbox-header inbox-old-header">
-                        이전 알림
-                    </div>
-                    <ul className="inbox-list-elements">
-                        <li className="notification-element">새로운 공지사항이 있습니다.</li>
-                        <li className="notification-element">새로운 공지사항이 있습니다.</li>
-                        
-                    </ul>
+                    
                 </div>
             </div>
         </div>
