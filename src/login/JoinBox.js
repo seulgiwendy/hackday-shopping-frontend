@@ -130,9 +130,7 @@ class JoinBox extends Component {
 
     render() {
         if(this.state.redirect) {
-            return(
-                <LoginBox/>
-            )
+            window.location.href = "http://localhost:3000";
         }
         return(
             <div className="login-container join-container">

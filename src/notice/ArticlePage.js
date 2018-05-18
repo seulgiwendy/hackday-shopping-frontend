@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import FileItem from '../admin/FileItem';
 import ArticleContent from './ArticleContent';
 import './article.css';
@@ -105,4 +105,4 @@ class ArticlePage extends Component {
     }
 }
 
-export default ArticlePage;
+export default withRouter(ArticlePage);

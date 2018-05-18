@@ -9,16 +9,18 @@ const UploadedFiles = (props) => {
                 return <FileItem filename={p.path} href={p.storeFilePath}/>
             })}
         </div>
-        )
+        );
     }
 
-    return(
-        <div className="fileupload-uploaded">
-            {props.files.map(p => {
-                return <FileItem filename={p.originalFileName} href={p.encodedFileName}/>
-            })}
-        </div>
-    );
+    else {
+        return(
+            <div className="fileupload-uploaded">
+                {props.files.map(p => {
+                    return <FileItem filename={p.originalFileName} href={p.encodedFileName}/>
+                })}
+            </div>
+        );
+    }
 }
 
 export default UploadedFiles;

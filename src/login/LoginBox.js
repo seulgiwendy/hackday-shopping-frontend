@@ -66,7 +66,7 @@ class LoginBox extends Component{
     
   render(){
       if(this.state.showJoin) {
-        return(<JoinBox finishJoin={this.changeShowJoin}/>);
+        return(<JoinBox finishJoin={this.changeShowJoin} handler={this.props.handler}/>);
       }
         return (
         <div className="login-container">
