@@ -9,7 +9,7 @@ const Footer = (props) => {
                 <li className="footer-elements">광고주 이용약관</li>
                 <li className="footer-elements">개인정보 처리방침</li>
                 <li className="footer-elements">커넥트원 키친 식단</li>
-                <li className="footer-elements">김준현 설렁탕 특으로 먹는다</li>
+                <li className="footer-elements">네이버 채용 홈페이지</li>
                 <li className="footer-elements">책임의 한계와 법적고지</li>
             </ul>
             <div className="footer-copyright">
